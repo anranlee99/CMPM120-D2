@@ -136,7 +136,18 @@ class AdventureScene extends Phaser.Scene {
             this.updateInventory();
         });
     }
-
+    typewriteText(text, target) {
+        const length = text.length
+        let i = 0
+        this.time.addEvent({
+            callback: () => {
+                target.text += text[i]
+                ++i
+            },
+            repeat: length - 1,
+            delay: 50
+        })
+    }
     gotoScene(key) {
         this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
         this.time.delayedCall(this.transitionDuration, () => {
