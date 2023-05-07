@@ -2,6 +2,9 @@ export class Incubator extends AdventureScene {
     constructor() {
         super("incubator", "Baby Steps");
     }
+    preload() {
+
+    }
     makeCursor() {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -38,61 +41,143 @@ export class Incubator extends AdventureScene {
         // this.input.setDefaultCursor(`url(${dataURI}), pointer`)
         // console.log(this.input.manager)
     }
+    randBinary() {
+        let s = ""
+        for (let i = 1; i <= 128; i++) {
+            s += Math.random() > 0.5 ? "1" : "0"
+            if (!(i % 32)) {
+                s += "\n"
+            } else if (!(i % 8)) {
+                s += " "
+            }
+
+        }
+        return s
+    }
     onEnter() {
-        // this.makeCursor()
-        this.showMessage("")
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("Metal, bent."))
-            .on('pointerdown', () => {
-                this.showMessage("No touching!");
-                this.tweens.add({
-                    targets: clip,
-                    x: '+=' + this.s,
-                    repeat: 2,
-                    yoyo: true,
-                    ease: 'Sine.inOut',
-                    duration: 100
-                });
-            });
+        //width of the play area
+        this.pw = this.w * 0.75;
+        this.load.html('nameform', 'assets/nameform.html');
 
-        let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("It's a nice key.")
-            })
-            .on('pointerdown', () => {
-                this.showMessage("You pick up the key.");
-                this.gainItem('key');
-                this.tweens.add({
-                    targets: key,
-                    y: `-=${2 * this.s}`,
-                    alpha: { from: 1, to: 0 },
-                    duration: 500,
-                    onComplete: () => key.destroy()
-                });
-            })
+        let msg1 = `Ok good! Let’s start with some preliminary tests.\n\nDo you see an animal in front of you?`
+        this.typewriteText(msg1)
+        console.log(msg1.length * 50)
+        let dialogue = this.add.text((this.pw) / 2, this.h * 0.1, this.randBinary(), {
+            textWrap: { width: this.w * 0.4 }
+        }).setOrigin(0.5, 0.5).setFontSize(this.s * 2)
 
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
-                } else {
-                    this.showMessage("It's locked. Can you find a key?");
-                }
-            })
-            .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
-                    this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
-                }
-            })
+        this.time.delayedCall(msg1.length * 50, () => {
+            let yes = this.add.text(this.pw / 3, this.h * 0.6, "yes").setOrigin(0.5, 0.5)
+                .setFontSize(this.s * 4)
+                .setInteractive()
+                .on('pointerover', () => {
+                    yes.setFontSize(this.s * 5)
+                })
+                .on('pointerout', () => {
+                    yes.setFontSize(this.s * 4)
+                })
+                .on('pointerdown', () => {
+                    if (yes.text === "yes") {
+                        this.messageBox.text = "Ok great! Just to make sure, what color is the animal?"
+                        yes.text = "yellow"
+                        no.text = "purple"
+                    } else {
+                        this.messageBox.text = "";
+                        let restart = "*sigh* I guess we'll have to start over."
+                        this.typewriteText(restart)
+                        this.time.delayedCall(restart.length * 50, () => {
+                            this.gotoScene('intro')
+                        })
+                    }
+                })
+            let no = this.add.text(this.pw * 2 / 3, this.h * 0.6, "no").setOrigin(0.5, 0.5)
+                .setFontSize(this.s * 4)
+                .setInteractive()
+                .on('pointerover', () => {
+                    no.setFontSize(this.s * 5)
+                })
+                .on('pointerout', () => {
+                    no.setFontSize(this.s * 4)
+                })
+                .on('pointerdown', () => {
+                    if (no.text === "no") {
+                        this.messageBox.text = ""
+                        yes.destroy();
+                        no.destroy();
+
+                        dialogue.text = "🐓"
+                        dialogue.setPadding(15)
+                        dialogue.setFontSize(250).setY(this.h * 0.3)
+                        this.typewriteText("Woops! That's my mistake. This should be better.\nOk, just so we're on the same page, what animal is this?\n")
+                        let egg = this.add.text(this.pw / 3, this.h * 0.6, "🥚").setPadding(15).setFontSize(100).setOrigin(0.5, 0.5).setInteractive({ draggable: true })
+                        let web = this.add.text(this.pw * 2 / 3, this.h * 0.6, "🕸️").setPadding(15).setFontSize(100).setOrigin(0.5, 0.5).setInteractive({ draggable: true })
+                        egg.on('pointerover', () => {
+                            this.tweens.add({
+                                targets: egg,
+                                angle: {
+                                    from: -15,
+                                    to: 15
+                                },
+                                duration: 500,
+                                yoyo: true,
+                                repeat: -1
+                            })
+                        })
+                        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+                            gameObject.x = dragX;
+                            gameObject.y = dragY;
+                        });
+
+                        egg.on('pointerout', () => {
+                            this.tweens.killTweensOf(egg)
+                            egg.angle = 0
+                        })
+                        //if egg and dialogue overlap
+                        this.physics.add.existing(egg);
+                        this.physics.add.existing(dialogue)
+
+                        this.physics.add.overlap(egg, dialogue, () => {
+                            egg.on('pointerup', () => {
+                                this.messageBox.text = "Ok great!"
+                                egg.destroy()
+                                web.destroy()
+                                dialogue.destroy()
+                                this.time.delayedCall(2000, () => {
+                                    this.gotoScene('tasks')
+                                })
+                            })
+
+                        })
+
+
+                        web.on('pointerover', () => {
+                            this.tweens.add({
+                                targets: web,
+                                angle: {
+                                    from: -15,
+                                    to: 15
+                                },
+                                duration: 500,
+                                yoyo: true,
+                                repeat: -1
+                            })
+                        })
+                        web.on('pointerout', () => {
+                            this.tweens.killTweensOf(web)
+                            web.angle = 0
+                        })
+
+
+                    } else {
+                        this.messageBox.text = "";
+                        let restart = "*sigh* I guess we'll have to start over."
+                        this.typewriteText(restart)
+                        this.time.delayedCall(restart.length * 50, () => {
+                            this.gotoScene('intro')
+                        })
+                    }
+                })
+        });
 
     }
 }

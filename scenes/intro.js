@@ -16,6 +16,7 @@ export class Intro extends AdventureScene {
         })
     }
     create() {
+        this.gotoScene('incubator')
         this.textobjs = []
         let line1 = "Obnoxious signals cloud your judgement as you are shocked into wakefulness."
         this.textobjs.push(this.dialogue = this.add.text(50, 50, "", {

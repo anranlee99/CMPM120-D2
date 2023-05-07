@@ -31,7 +31,7 @@ class AdventureScene extends Phaser.Scene {
 
         this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.66)
             .setStyle({ fontSize: `${2 * this.s}px` })
-            .setText("Inventory")
+            .setText("Toolbox")
             .setAlpha(0);
 
         this.inventoryTexts = [];
@@ -136,12 +136,12 @@ class AdventureScene extends Phaser.Scene {
             this.updateInventory();
         });
     }
-    typewriteText(text, target) {
+    typewriteText(text) {
         const length = text.length
         let i = 0
         this.time.addEvent({
             callback: () => {
-                target.text += text[i]
+                this.messageBox.text += text[i]
                 ++i
             },
             repeat: length - 1,
