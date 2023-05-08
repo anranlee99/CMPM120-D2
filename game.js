@@ -1,6 +1,7 @@
 import { Intro } from "./scenes/intro.js";
 import { Incubator } from "./scenes/incubator.js";
-import { Tasks } from "./scenes/tasks.js";
+import { Facts } from "./scenes/facts.js";
+import { Program } from "./scenes/program.js";
 import { Outro } from "./scenes/outro.js";
 
 
@@ -18,7 +19,7 @@ const game = new Phaser.Game({
             debug: false
         }
     },
-    scene: [Intro, Incubator, Tasks, Outro],
+    scene: [Intro, Incubator, Facts, Program, Outro],
     title: "Everything's a Nail",
 });
 

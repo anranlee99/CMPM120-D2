@@ -1,4 +1,4 @@
-export class Intro extends AdventureScene {
+export class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
     }
@@ -16,7 +16,10 @@ export class Intro extends AdventureScene {
         })
     }
     create() {
-        this.gotoScene('incubator')
+        // this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
+        // this.time.delayedCall(this.transitionDuration, () => {
+        //     this.scene.start('program', { inventory: this.inventory });
+        // });
         this.textobjs = []
         let line1 = "Obnoxious signals cloud your judgement as you are shocked into wakefulness."
         this.textobjs.push(this.dialogue = this.add.text(50, 50, "", {
@@ -39,10 +42,15 @@ export class Intro extends AdventureScene {
                 })
                 .on('pointerdown', () => {
                     this.cameras.main.fade(1000, 0, 0, 0);
-                    this.time.delayedCall(1000, () => this.gotoScene('incubator'));
+                    this.time.delayedCall(1000, () => {
+                        this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
+                        this.time.delayedCall(this.transitionDuration, () => {
+                            this.scene.start('incubator', { inventory: this.inventory });
+                        });
+                    });
                 })
-    
-    
+
+
             let nogo = this.add.text(900, 600, "1").setFontSize(200).setInteractive()
                 .on('pointerover', () => {
                     nogo.setStyle({ color: '#ff0000' });
@@ -55,12 +63,16 @@ export class Intro extends AdventureScene {
                     this.add.text(50, 50, `*Sigh* "Ok. Let's try this again."`).setFontSize(50);
                     this.time.delayedCall(3000, () => {
                         this.cameras.main.fade(2000, 0, 0, 0);
-                })
+                    })
                     this.time.delayedCall(5000, () => {
-                        this.gotoScene('intro')});
+                        this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
+                        this.time.delayedCall(this.transitionDuration, () => {
+                            this.scene.start('intro', { inventory: this.inventory });
+                        });
+                    });
                 })
-                this.textobjs.push(go)
-                this.textobjs.push(nogo)
+            this.textobjs.push(go)
+            this.textobjs.push(nogo)
         })
 
 

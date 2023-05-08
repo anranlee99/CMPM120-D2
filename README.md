@@ -1,17 +1,20 @@
-A simple adventure game by {who?} based on a simple adventure game engine by [Adam Smith](https://github.com/rndmcnlly).
+A simple adventure game by Aaron Lee based on a simple adventure game engine by [Adam Smith](https://github.com/rndmcnlly).
 
 Code requirements:
 - **4+ scenes based on `AdventureScene`**: unsatisfied (name at least 4 of the classes).
 - **2+ scenes *not* based on `AdventureScene`**: unsatisfied (name the classes).
 - **2+ methods or other enhancement added to the adventure game engine to simplify my scenes**:
-    - Enhancement 1: unsatisfied (name the method and explain the use of it).
+    - Enhancement 1: 
     - Enhancement 2: unsatisfied (name the method and explain the use of it).
 
 Experience requirements:
 - **4+ locations in the game world**: unsatisfied (name at least 4 of the classes).
 - **2+ interactive objects in most scenes**: unsatisfied (describe two examples)
-- **Many objects have `pointerover` messages**: unsatisfied (describe two examples)
+- **Many objects have `pointerover` messages**: 
+    - in the first scene, the numbers change color
+    - in the second scene, the options have a tween
 - **Many objects have `pointerdown` effects**: unsatisfied (describe two examples)
+    - there is a drag and drop physics functionality in the second scene
 - **Some objects are themselves animated**: unsatisfied (describe two examples)
 
 Asset sources:
