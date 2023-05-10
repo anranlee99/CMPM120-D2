@@ -61,7 +61,6 @@ export class Incubator extends AdventureScene {
 
         let msg1 = `Ok good! Let’s start with some preliminary tests.\n\nDo you see an animal in front of you?`
         this.typewriteText(msg1)
-        console.log(msg1.length * 50)
         let dialogue = this.add.text((this.pw) / 2, this.h * 0.1, this.randBinary(), {
             textWrap: { width: this.w * 0.4 }
         }).setOrigin(0.5, 0.5).setFontSize(this.s * 2)

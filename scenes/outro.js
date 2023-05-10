@@ -15,7 +15,6 @@ export class Outro extends Phaser.Scene {
         })
     }
     create() {
-        console.log("outro")
         this.time.delayedCall(2000, () => {
             let line1 =
                 `Cessation of experimentation on test subject 137225 has been initiated. 
