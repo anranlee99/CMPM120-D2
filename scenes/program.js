@@ -63,7 +63,7 @@ export class Program extends AdventureScene {
         if (this.rval.text == 255 && this.gval.text == 255 && this.bval.text == 255) {
             this.messageBox.text = "Great! "
             this.gainItem('💻');
-            this.gotoScene("evolution")
+            this.gotoScene("server")
         }
     }
 }

@@ -16,24 +16,20 @@ export class Intro extends Phaser.Scene {
         })
     }
     create() {
-        // this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
-        // this.time.delayedCall(this.transitionDuration, () => {
-        //     this.scene.start('program', { inventory: this.inventory });
-        // });
         this.textobjs = []
         let line1 = "Obnoxious signals cloud your judgement as you are shocked into wakefulness."
-        this.textobjs.push(this.dialogue = this.add.text(50, 50, "", {
+        this.textobjs.push(this.dialogue = this.add.text(this.game.config.width/2, 50, "", {
             wordWrap: {
                 width: 1000
             },
             fontSize: 50,
             fontStyle: 'italic',
-        }))
+        }).setOrigin(0.5, 0))
         this.typewriteText(line1, this.dialogue)
 
         this.time.delayedCall(line1.length * 50 + 1000, () => {
-            this.textobjs.push(this.add.text(50, 300, `"Testing. Testing.\n Return 0 to proceed."`).setFontSize(50));
-            let go = this.add.text(600, 600, "0").setFontSize(200).setInteractive()
+            this.textobjs.push(this.add.text(this.game.config.width/2, this.game.config.height * 0.4, `"Testing. Testing. Return 0 to proceed."`).setFontSize(50).setOrigin(0.5, 0.5));
+            let go = this.add.text(this.game.config.width/3, this.game.config.height*0.6, "0").setFontSize(200).setOrigin(0.5,0.5).setInteractive()
                 .on('pointerover', () => {
                     go.setStyle({ color: '#00ff00' });
                 })
@@ -51,7 +47,7 @@ export class Intro extends Phaser.Scene {
                 })
 
 
-            let nogo = this.add.text(900, 600, "1").setFontSize(200).setInteractive()
+            let nogo = this.add.text(this.game.config.width*2/3, this.game.config.height*0.6, "1").setOrigin(0.5,0.5).setFontSize(200).setInteractive()
                 .on('pointerover', () => {
                     nogo.setStyle({ color: '#ff0000' });
                 })
@@ -60,7 +56,7 @@ export class Intro extends Phaser.Scene {
                 })
                 .on('pointerdown', () => {
                     this.textobjs.forEach((obj) => obj.destroy())
-                    this.add.text(50, 50, `*Sigh* "Ok. Let's try this again."`).setFontSize(50);
+                    this.add.text(this.game.config.width/2, 50, `*Sigh* "Ok. Let's try this again."`).setFontSize(50).setOrigin(0.5, 0);
                     this.time.delayedCall(3000, () => {
                         this.cameras.main.fade(2000, 0, 0, 0);
                     })

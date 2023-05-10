@@ -3,7 +3,7 @@ export class Incubator extends AdventureScene {
         super("incubator", "Baby Steps");
     }
     preload() {
-        
+
     }
     makeCursor() {
         const canvas = document.createElement('canvas');
@@ -45,12 +45,12 @@ export class Incubator extends AdventureScene {
         let s = ""
         for (let i = 1; i <= 128; i++) {
             s += Math.random() > 0.5 ? "1" : "0"
-            if(!(i % 32)){
+            if (!(i % 32)) {
                 s += "\n"
-            } else if(!(i % 8)){
+            } else if (!(i % 8)) {
                 s += " "
             }
-            
+
         }
         return s
     }
@@ -62,12 +62,12 @@ export class Incubator extends AdventureScene {
         let msg1 = `Ok good! Let’s start with some preliminary tests.\n\nDo you see an animal in front of you?`
         this.typewriteText(msg1)
         console.log(msg1.length * 50)
-        let dialogue = this.add.text((this.pw)/2, this.h * 0.1, this.randBinary(), {
+        let dialogue = this.add.text((this.pw) / 2, this.h * 0.1, this.randBinary(), {
             textWrap: { width: this.w * 0.4 }
-        }).setOrigin(0.5,0.5).setFontSize(this.s * 2)
+        }).setOrigin(0.5, 0.5).setFontSize(this.s * 2)
 
         this.time.delayedCall(msg1.length * 50, () => {
-            let yes = this.add.text(this.pw/3, this.h * 0.6, "yes").setOrigin(0.5, 0.5)
+            let yes = this.add.text(this.pw / 3, this.h * 0.6, "yes").setOrigin(0.5, 0.5)
                 .setFontSize(this.s * 4)
                 .setInteractive()
                 .on('pointerover', () => {
@@ -77,7 +77,7 @@ export class Incubator extends AdventureScene {
                     yes.setFontSize(this.s * 4)
                 })
                 .on('pointerdown', () => {
-                    if(yes.text === "yes"){
+                    if (yes.text === "yes") {
                         this.messageBox.text = "Ok great! Just to make sure, what color is the animal?"
                         yes.text = "yellow"
                         no.text = "purple"
@@ -90,7 +90,7 @@ export class Incubator extends AdventureScene {
                         })
                     }
                 })
-            let no = this.add.text(this.pw*2/3, this.h * 0.6, "no").setOrigin(0.5, 0.5)
+            let no = this.add.text(this.pw * 2 / 3, this.h * 0.6, "no").setOrigin(0.5, 0.5)
                 .setFontSize(this.s * 4)
                 .setInteractive()
                 .on('pointerover', () => {
@@ -100,17 +100,17 @@ export class Incubator extends AdventureScene {
                     no.setFontSize(this.s * 4)
                 })
                 .on('pointerdown', () => {
-                    if(no.text === "no"){
+                    if (no.text === "no") {
                         this.messageBox.text = ""
                         yes.destroy();
                         no.destroy();
-                        
+
                         dialogue.text = "🐓"
                         dialogue.setPadding(15)
-                        dialogue.setFontSize(250).setY(this.h*0.3)
+                        dialogue.setFontSize(250).setY(this.h * 0.3)
                         this.typewriteText("Woops! That's my mistake. This should be better.\nOk, just so we're on the same page, match the associated items.\n")
-                        let egg = this.add.text(this.pw/3, this.h * 0.6, "🥚").setPadding(15).setFontSize(100).setOrigin(0.5, 0.5).setInteractive({draggable:true})
-                        let web = this.add.text(this.pw*2/3, this.h * 0.6, "🕸️").setPadding(15).setFontSize(100).setOrigin(0.5, 0.5).setInteractive({draggable:true})
+                        let egg = this.add.text(this.pw / 3, this.h * 0.6, "🥚").setPadding(15).setFontSize(100).setOrigin(0.5, 0.5).setInteractive({ draggable: true })
+                        let web = this.add.text(this.pw * 2 / 3, this.h * 0.6, "🕸️").setPadding(15).setFontSize(100).setOrigin(0.5, 0.5).setInteractive({ draggable: true })
                         egg.on('pointerover', () => {
                             this.tweens.add({
                                 targets: egg,
@@ -123,31 +123,41 @@ export class Incubator extends AdventureScene {
                                 repeat: -1
                             })
                         })
-                        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-                            gameObject.x = dragX;
-                            gameObject.y = dragY;
-                        });
-    
+                        
                         egg.on('pointerout', () => {
                             this.tweens.killTweensOf(egg)
                             egg.angle = 0
                         })
+                        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+                            gameObject.x = dragX;
+                            gameObject.y = dragY;
+                        });
                         //if egg and dialogue overlap
                         this.physics.add.existing(egg);
                         this.physics.add.existing(dialogue)
 
+                        let mouseIsUp = false;
+
+
+                        egg.on('pointerup', () => {
+                            mouseIsUp = true;
+                        });
                         this.physics.add.overlap(egg, dialogue, () => {
-                            this.messageBox.text = "Ok great!"
-                            egg.destroy()
-                            web.destroy()
-                            dialogue.destroy()
-                            this.time.delayedCall(2000, () => {
-                                this.gainItem('👓')
-                                this.gotoScene('facts')
-                            })
-        
+                            if (mouseIsUp) {
+                                this.messageBox.text = "Ok great!"
+                                egg.destroy()
+                                web.destroy()
+                                dialogue.destroy()
+                                this.time.delayedCall(2000, () => {
+                                    this.gainItem('👓')
+                                    this.gotoScene('facts')
+                                })
+                            }
+
                         })
-                            
+
+                        
+
 
                         web.on('pointerover', () => {
                             this.tweens.add({
@@ -165,8 +175,8 @@ export class Incubator extends AdventureScene {
                             this.tweens.killTweensOf(web)
                             web.angle = 0
                         })
-                        
-                        
+
+
                     } else {
                         this.messageBox.text = "";
                         let restart = "*sigh* I guess we'll have to start over."
@@ -174,9 +184,9 @@ export class Incubator extends AdventureScene {
                         this.time.delayedCall(restart.length * 50, () => {
                             this.gotoScene('intro')
                         })
-                    } 
+                    }
                 })
-        }); 
+        });
 
     }
 }
